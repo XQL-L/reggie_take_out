@@ -1,4 +1,4 @@
-package com.itheima;
+package com.itheima.reggie;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +21,9 @@ class dog implements Animal{
 	}
 }
 
-@SpringBootTest
+@SpringBootTest//当测试类与引导类在同一包下时，能拿到Spring容器
 class ReggieTakeOutApplicationTests {
+
 
 	@Test
 	void contextLoads() {

@@ -90,7 +90,11 @@
 			<version>2.1.0</version>
 		</dependency>
 
-
+<!--		redis连接spring-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
 
 
 	</dependencies>
