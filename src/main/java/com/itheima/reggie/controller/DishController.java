@@ -133,8 +133,7 @@ public class DishController {
 
     /**
      * 根据条件查询菜品数据
-     * @param categoryId
-     * @param name
+     * @param dish
      * @return
      */
 /*    @GetMapping("/list")

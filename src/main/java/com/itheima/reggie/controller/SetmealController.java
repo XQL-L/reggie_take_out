@@ -13,6 +13,8 @@ import com.itheima.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class SetmealController {
      */
 //    http://localhost/setmeal
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto){
         log.info("新增套餐信息为===>{}",setmealDto);
         setmealService.saveWithDish(setmealDto);
@@ -80,6 +83,7 @@ public class SetmealController {
     }
 //    http://localhost/setmeal?ids=1625757784879427585,1625752871470370817
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> delete(Long... ids){//或者 @RequstParam List<Long> ids
         log.info("修改的ids为==》{}",ids);
         setmealService.removeWithDish(ids);
@@ -89,6 +93,7 @@ public class SetmealController {
 //    http://localhost/setmeal/status/0?ids=1625757784879427585,1625752871470370817   ----POST
 //    TODO:判断点起售的请求，本身是不是已经是起售的状态
     @PostMapping("/status/{toStatus}")//REST风格无法完成String转化到实体类，@PathVariable Setmeal setmeal不可以
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> update(@PathVariable Integer toStatus,@RequestParam List<Long> ids){
         log.info(toStatus.toString());
         log.info(ids.toString());
@@ -108,6 +113,7 @@ public class SetmealController {
      */
 //    http://localhost/setmeal/list?categoryId=1413342269393674242&status=1
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId +'_' + #setmeal.status")
     public R<List<Setmeal>> list(Setmeal setmeal){
         LambdaQueryWrapper<Setmeal> qw = new LambdaQueryWrapper<>();
         qw.eq(null!=setmeal.getCategoryId(),Setmeal::getCategoryId,setmeal.getCategoryId());
